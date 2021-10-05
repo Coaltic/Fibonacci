@@ -8,32 +8,37 @@ namespace Fibonacci
 {
     class Program
     {
-        static public int i;
+        static public int i = 100;
         static decimal start = 0;
         static decimal second = 1;
 
+        static public decimal[] fibs = new decimal[200];
+
         static void Main(string[] args)
         {
-            
-            Fibonacci(start, second);
 
-            
+            for (int y = 0; y <= i; y++)
+            {
+                Console.WriteLine(y + ": " + Fib(y));
+            }
+                
+            Console.ReadKey(true);
         }
-
         static public void Fibonacci(decimal a, decimal b)
         {
-            i++;
+            //i++;
             decimal c = a + b;
             
             Console.Write(i + ": " + c);
-            Ratio(a, b);
+            //Ratio(a, b);
 
             a = b;
             b = c;
 
             
 
-            if (i < 138) 
+
+            /*if (i < 138) 
             {
                 Fibonacci(a, b);
                 
@@ -43,7 +48,7 @@ namespace Fibonacci
                 Console.ReadKey(true);
                 //ExactFibonacci(start, second);
 
-            }
+            }*/
 
             
 
@@ -53,51 +58,41 @@ namespace Fibonacci
         {
             decimal c = a / b;
             Console.WriteLine("    Golden Ratio: " + c);
-            //a = b;
-            //b = c;
-
-            //if (c > 1000000) { Console.ReadKey(true); }
-
-            //Fibonacci(a, b);
 
         }
 
-        /*static public void ExactFibonacci(decimal a, decimal b)
+        static public void CacheFib(decimal i, decimal number)
         {
-            
-            int i = 10;
+            int k = Decimal.ToInt32(i);
+            fibs[k] = number;
+        }
 
-            for (int y = 0; y <= i; y++)
+        static public decimal Fib(decimal i)
+        {
+            int k;
+            if (i == 0) { CacheFib(i, 0); return 0; }
+            if (i == 1) { CacheFib(i, 1); return 1; }
+
+            if (fibs[k = Decimal.ToInt32(i)] == 0)
             {
+                decimal a = Fib(i - 1);
+                decimal b = Fib(i - 2);
                 decimal c = a + b;
-                a = b;
-                b = c;
-
-                //y++;
-
-                if (y >= i)
-                {
-                    Console.WriteLine();
-                    Console.WriteLine();
-                    Console.WriteLine();
-                    Console.WriteLine(i + ": " + c);
-
-                    
-                }
-                else
-                {
-                    ExactFibonacci(a, b);
-                }
+                CacheFib(i, c);
+                return c;
             }
-
-
-
-            Console.ReadKey(true);
-
-
-
-
-        }*/
+            else
+            {
+                decimal a = fibs[k = Decimal.ToInt32(i - 1)];
+                decimal b = fibs[k = Decimal.ToInt32(i - 2)];
+                decimal c = a + b;
+                CacheFib(i, c);
+                return c;
+            }
+            
+        }
     }
 
 }
+
+//Fib(10) == Fib(8) + Fib(9) -----> Fib(8) == Fib(7) + Fib(6)
